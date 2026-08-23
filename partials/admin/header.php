@@ -1,3 +1,7 @@
+<?php
+include(__DIR__ . '/../../helpers.php');
+echo baseUrl('cms-pdo');
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
