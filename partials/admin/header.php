@@ -1,6 +1,5 @@
 <?php
-include(__DIR__ . '/../../helpers.php');
-echo baseUrl('cms-pdo');
+include(__DIR__ . '/../../init.php');
 ?>
 <!DOCTYPE html>
 <html lang="en">
