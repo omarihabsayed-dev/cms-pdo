@@ -3,7 +3,8 @@ include 'partials/header.php';
 include 'partials/navbar.php';
 include 'partials/hero.php';
 $db = new Database();
-var_dump($db);
+
+var_dump($db->getConnection());
 ?>
 <main class="container my-5">
         <!-- Blog Post 1 -->
