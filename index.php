@@ -1,67 +1,43 @@
 <?php 
-include 'partials/header.php';
-include 'partials/navbar.php';
-include 'partials/hero.php';
-$db = new Database();
-
-var_dump($db->getConnection());
+require_once 'partials/header.php';
+include basePath('partials/navbar.php');
+include basePath('partials/hero.php');
+$posts = new Article();
+$articles = $posts->getAll();
 ?>
 <main class="container my-5">
+    <?php if(!empty($articles)): ?>
+        <?php foreach($articles as $article): ?>
         <!-- Blog Post 1 -->
         <div class="row mb-4">
             <div class="col-md-4">
+                <?php if(!empty($article->image)): ?>
+                    <img
+                        src="<?php echo htmlspecialchars($article->image); ?>"
+                        class="img-fluid"
+                        alt="Blog Post Image"
+                    >
+                <?php else: ?>
                 <img
-                    src="https://via.placeholder.com/350x200"
+                    src="https://via.placeholder.com/350x150"
                     class="img-fluid"
                     alt="Blog Post Image"
                 >
+                <?php endif; ?>
             </div>
             <div class="col-md-8">
-                <h2>Blog Post Title 1</h2>
+                <h2><?php echo htmlspecialchars($article->title); ?></h2>
                 <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque nisl eros, 
-                    pulvinar facilisis justo mollis, auctor consequat urna.
+                    <?php echo htmlspecialchars($posts->getExcerpt($article->content)); ?>
                 </p>
-                <a href="article.html" class="btn btn-primary">Read More</a>
+                <a href="article.php" class="btn btn-primary">Read More</a>
             </div>
         </div>
-        <!-- Blog Post 2 -->
-        <div class="row mb-4">
-            <div class="col-md-4">
-                <img
-                    src="https://via.placeholder.com/350x200"
-                    class="img-fluid"
-                    alt="Blog Post Image"
-                >
-            </div>
-            <div class="col-md-8">
-                <h2>Blog Post Title 2</h2>
-                <p>
-                    Morbi in sem quis dui placerat ornare. Pellentesque odio nisi, euismod in, 
-                    pharetra a, ultricies in, diam. Sed arcu.
-                </p>
-                <a href="#" class="btn btn-primary">Read More</a>
-            </div>
-        </div>
-        <!-- Blog Post 3 -->
-        <div class="row mb-4">
-            <div class="col-md-4">
-                <img
-                    src="https://via.placeholder.com/350x200"
-                    class="img-fluid"
-                    alt="Blog Post Image"
-                >
-            </div>
-            <div class="col-md-8">
-                <h2>Blog Post Title 3</h2>
-                <p>
-                    Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue, eu 
-                    vulputate magna eros eu erat.
-                </p>
-                <a href="#" class="btn btn-primary">Read More</a>
-            </div>
-        </div>
-    </main>
+    <?php endforeach; ?>
+    <?php else: ?>
+        <p>No articles found.</p>
+    <?php endif; ?>
+</main>
 <?php 
 include 'partials/footer.php';
 ?>
