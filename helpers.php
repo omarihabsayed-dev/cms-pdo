@@ -1,6 +1,6 @@
 <?php
 function baseUrl($path = '') {
-	$protocol = isset($_SERVER['HTTPS'])  && $_SERVER['HTTPS'] !== 'off' ? 'https://' : 'http://';
+	$protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' ? 'https://' : 'http://';
 	$host = $_SERVER['HTTP_HOST'];
 	$baseUrl = $protocol . $host . '/' . PROJECT_DIR;
 	return $baseUrl . '/' . ltrim($path, '/');

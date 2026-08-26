@@ -13,16 +13,17 @@ $articles = $posts->getAll();
             <div class="col-md-4">
                 <?php if(!empty($article->image)): ?>
                     <img
-                        src="<?php echo htmlspecialchars($article->image); ?>"
-                        class="img-fluid"
-                        alt="Blog Post Image"
-                    >
-                <?php else: ?>
-                <img
-                    src="https://via.placeholder.com/350x150"
+                    src="<?php echo htmlspecialchars($article->image); ?>"
                     class="img-fluid"
                     alt="Blog Post Image"
-                >
+                    >
+                <?php else: ?>
+                    <img
+                    src="https://placehold.co/350x200"
+                    class="img-fluid"
+                    alt="Blog Post Image"
+                    >
+               </div>
                 <?php endif; ?>
             </div>
             <div class="col-md-8">
@@ -30,7 +31,7 @@ $articles = $posts->getAll();
                 <p>
                     <?php echo htmlspecialchars($posts->getExcerpt($article->content)); ?>
                 </p>
-                <a href="article.php" class="btn btn-primary">Read More</a>
+                <a href="article.php?id=<?php echo $article->id; ?>" class="btn btn-primary">Read More</a>
             </div>
         </div>
     <?php endforeach; ?>
