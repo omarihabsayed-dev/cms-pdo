@@ -34,7 +34,7 @@ if($articleId) {
                 <h1 class="display-4"><?php echo $articleData->title; ?></h1>
                 <small>
                     By <a href="profile.php"><?php echo $articleData->author; ?></a>
-                    <span>Published on <?php echo $article->formatCreatedAt($articleData->created_at); ?></span>
+                    <span>Published on <?php echo formatDate($articleData->created_at); ?></span>
                 </small>
             </div>
         </section>

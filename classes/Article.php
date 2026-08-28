@@ -34,6 +34,14 @@ class Article {
         }
     }
 
+    public function articlesByUser($userId) {
+        $query = "SELECT * FROM " . $this->table . " WHERE user_id = :userId ORDER BY created_at DESC";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
+    }
+
     public function getArticleWithOwnerById($id) {
         $query = "SELECT articles.id, articles.title, articles.content, articles.created_at, articles.image, users.username AS author, users.email AS author_email FROM " . $this->table . " JOIN users ON articles.user_id = users.id WHERE articles.id = :id LIMIT 1";
         $stmt = $this->conn->prepare($query);
@@ -45,10 +53,6 @@ class Article {
         } else {
             return false;
         }
-    }
-
-    public function formatCreatedAt($date) {
-        return date('F j, Y', strtotime($date));
     }
 }
 ?>

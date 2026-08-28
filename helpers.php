@@ -35,3 +35,8 @@ function isPostRequest() {
 function getPostData($field, $default = null) {
 	return isset($_POST[$field]) ? trim($_POST[$field]) : $default;
 }
+
+
+function formatDate($date) {
+        return date('F j, Y', strtotime($date));
+}
