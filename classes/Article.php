@@ -54,5 +54,15 @@ class Article {
             return false;
         }
     }
-}
+
+    public function create($title, $created_at, $content, $author_id) {
+        $query = "INSERT INTO " . $this->table . " (title, created_at, content, user_id) VALUES(:title, :created_at, :content, :author_id)";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':title', $title);
+        $stmt->bindParam(':created_at', $created_at);
+        $stmt->bindParam(':content', $content);
+        $stmt->bindParam(':author_id', $author_id);
+        return $stmt->execute();
+    }
+}   
 ?>
