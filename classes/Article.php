@@ -55,13 +55,14 @@ class Article {
         }
     }
 
-    public function create($title, $created_at, $content, $author_id) {
-        $query = "INSERT INTO " . $this->table . " (title, created_at, content, user_id) VALUES(:title, :created_at, :content, :author_id)";
+    public function create($title, $created_at, $content, $author_id, $filePath) {
+        $query = "INSERT INTO " . $this->table . " (title, created_at, content, user_id, image) VALUES(:title, :created_at, :content, :author_id, :image)";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':title', $title);
         $stmt->bindParam(':created_at', $created_at);
         $stmt->bindParam(':content', $content);
         $stmt->bindParam(':author_id', $author_id);
+        $stmt->bindParam(':image', $filePath);
         return $stmt->execute();
     }
 }   
