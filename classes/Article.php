@@ -34,6 +34,26 @@ class Article {
         }
     }
 
+    public function deleteWithImage($id) {
+        $article = $this->getArticleById($id);
+        if($article) {
+            if($article->user_id == $_SESSION['user_id']) {
+                if(!empty($article->image) && file_exists($article->image)) {
+                if(!unlink($article->image)) {
+                    return false;
+                }
+            }
+            $query = "DELETE FROM " . $this->table . " WHERE id = :id";
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            return $stmt->execute();
+        } else {
+            redirect('admin.php');
+        }
+        return false;
+        }
+    }
+
     public function articlesByUser($userId) {
         $query = "SELECT * FROM " . $this->table . " WHERE user_id = :userId ORDER BY created_at DESC";
         $stmt = $this->conn->prepare($query);

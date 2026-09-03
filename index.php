@@ -16,6 +16,7 @@ $articles = $posts->getAll();
                     src="<?php echo htmlspecialchars($article->image); ?>"
                     class="img-fluid"
                     alt="Blog Post Image"
+                    style="width: 350px; height: 200px;"
                     >
                 <?php else: ?>
                     <img

@@ -18,7 +18,8 @@ $userArticles = $article->articlesByUser($userId);
                         <th>Author</th>
                         <th>Published Date</th>
                         <th>Excerpt</th>
-                        <th>Actions</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -34,8 +35,13 @@ $userArticles = $article->articlesByUser($userId);
                             <?php echo $article->getExcerpt($articleItem->content); ?>
                         </td>
                         <td>
-                            <a href="edit-article.html?id=<?php echo $article->id; ?>" class="btn btn-sm btn-primary me-1">Edit</a>
-                            <button class="btn btn-sm btn-danger" onclick="confirmDelete(1)">Delete</button>
+                            <a href="edit-article.php?id=<?php echo $articleItem->id; ?>" class="btn btn-sm btn-primary me-1">Edit</a>
+                        </td>
+                        <td>
+                            <form method="POST" action="<?php echo baseUrl('delete-article.php'); ?>" onsubmit="return confirm('Are you sure you want to delete this article?');">
+                            <input type="hidden" name="article_id" value="<?php echo $articleItem->id; ?>">
+                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                            </form>
                         </td>
                     </tr>
                     <?php endforeach; ?>
