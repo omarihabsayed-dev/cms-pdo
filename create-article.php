@@ -2,37 +2,19 @@
 include 'partials/admin/header.php';
 include 'partials/admin/navbar.php';
 if(isPostRequest()) {
-    $filePath = '';
-    $targetDir = 'uploads/';
-    if(!is_dir($targetDir)) {
-        mkdir($targetDir, 0755, true);
-    }
-    if(isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
-        $originalName  = $_FILES['image']['name'];
-        $imageFileType = strtolower(pathinfo($originalName, PATHINFO_EXTENSION));
-        $allowedTypes = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
-        if(in_array($imageFileType, $allowedTypes)) {
-            $uniqueName = uniqid('img_', true) . '.' . $imageFileType;
-            $targetFile = $targetDir . $uniqueName;
-            if(move_uploaded_file($_FILES['image']['tmp_name'], $targetFile)) {
-                $filePath = $targetFile;
-            } else {
-                echo "<div class='alert alert-danger'>Error uploading the image.</div>";
-            }
-        } else {
-            echo "<div class='alert alert-danger'>Invalid file type. Only JPG, JPEG, PNG, GIF, and WEBP are allowed.</div>";
-        }
-
-    }
     $title = getPostData('title');
     $created_at = getPostData('date');
     $content = getPostData('content');
     $author_id = $_SESSION['user_id'];
     $article = new Article();
-    if($article->create($title, $created_at, $content, $author_id, $filePath)) {
+    $imagePath = $article->uploadImage($_FILES['image']);
+    if(strpos($imagePath, 'error') === false) {
+        if($article->create($title, $created_at, $content, $author_id, $imagePath)) {
         redirect('admin.php');
         exit;
     }
+    }
+
 
 }
 ?>
