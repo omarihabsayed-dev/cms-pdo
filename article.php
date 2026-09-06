@@ -19,6 +19,7 @@ if($articleId) {
                 src="<?php echo htmlspecialchars($articleData->image); ?>"
                 class="img-fluid w-100"
                 alt="Featured Image"
+                style="width: 1200px; height: 600px; object-fit: cover;"
             >
             <?php else: ?>
             <img
@@ -56,7 +57,7 @@ if($articleId) {
 
         <!-- Back to Home Button -->
         <div class="mt-4">
-            <a href="index.php" class="btn btn-secondary">← Back to Home</a>
+            <a href="<?php echo baseUrl('index.php'); ?>" class="btn btn-secondary">← Back to Home</a>
         </div>
     </main>
 <?php 

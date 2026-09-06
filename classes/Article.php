@@ -132,5 +132,46 @@ class Article {
     }
     return '';
     }
+
+    public function generateDummyData($count = 10) {
+        $query = "INSERT INTO " . $this->table . " (title, content, user_id, created_at) VALUES (:title, :content, :user_id, :created_at)";
+        $stmt = $this->conn->prepare($query);
+        $dummyTitles = [
+            "The Future of Technology",
+            "Exploring the Depths of the Ocean",
+            "The Art of Mindfulness",
+            "A Journey Through Time",
+            "The Secrets of the Universe",
+            "The Power of Positive Thinking",
+            "The Wonders of Space Exploration",
+            "The Beauty of Nature",
+            "The Evolution of Music",
+            "The Impact of Social Media"
+        ];
+        $dummyContents = [
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+            "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+            "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+            "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+            "Curabitur pretium tincidunt lacus. Nulla gravida orci a odio. Nullam varius, turpis et commodo pharetra.",
+            "Donec sodales sagittis magna. Sed consequat, leo eget bibendum sodales, augue velit cursus nunc.",
+            "Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.",
+            "Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper.",
+            "Aenean ultricies mi vitae est. Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra.",
+            "Vestibulum erat wisi, condimentum sed, commodo vitae, ornare sit amet, wisi."
+        ];
+        $userId = $_SESSION['user_id'];
+        $createdAt = date('Y-m-d');
+        for($i = 0; $i < $count; $i++) {
+            $title = $dummyTitles[array_rand($dummyTitles)];
+            $stmt->bindParam(':title', $title);
+            $content = $dummyContents[array_rand($dummyContents)];
+            $stmt->bindParam(':content', $content);
+            $stmt->bindParam(':created_at', $createdAt);
+            $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
+            $stmt->execute();
+        }
+        return true;
+    }
 }   
 ?>

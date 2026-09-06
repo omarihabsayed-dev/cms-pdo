@@ -7,7 +7,17 @@ $userArticles = $article->articlesByUser($userId);
 ?>
     <main class="container my-5">
         <h2 class="mb-4">Welcome <?php echo $_SESSION['username']; ?> to Admin Dashboard</h2>
-
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <form class="d-flex align-items-center" method="POST" action="<?php echo baseUrl('create-dummy-articles.php'); ?>">
+                <label for="articleCount" class="form-label me-2">Number of Dummy Articles:</label>
+                <input style="width: 100px;" type="number" class="form-control" id="articleCount" name="articleCount" value="10" min="1" max="100">
+                <button id="articleCount" class="btn btn-primary ms-2" type="submit"> Create Dummy Articles</button>
+            </form>
+             <form method="POST">
+            <button name="reorder_articles" class="btn btn-warning" type="submit"> Reorder Articles</button>
+            </form>
+            <button id="deleteSelected" class="btn btn-danger">Delete Selected Articles</button>
+        </div>
         <!-- Articles Table -->
         <div class="table-responsive">
             <table class="table table-bordered table-hover align-middle">
@@ -38,7 +48,7 @@ $userArticles = $article->articlesByUser($userId);
                             <a href="edit-article.php?id=<?php echo $articleItem->id; ?>" class="btn btn-sm btn-primary me-1">Edit</a>
                         </td>
                         <td>
-                            <form method="POST" action="<?php echo baseUrl('delete-article.php'); ?>" onsubmit="return confirm('Are you sure you want to delete this article?');">
+                            <form method="POST" action="<?php echo baseUrl('delete-article.php'); ?>" onsubmit="return confirmDelete(<?php echo $articleItem->id; ?>);">
                             <input type="hidden" name="article_id" value="<?php echo $articleItem->id; ?>">
                             <button type="submit" class="btn btn-sm btn-danger">Delete</button>
                             </form>

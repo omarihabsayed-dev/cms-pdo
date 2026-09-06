@@ -41,7 +41,7 @@ if(isPostRequest()) {
                     <button type="submit" class="btn btn-primary w-100">Login</button>
                 </form>
                 <p class="mt-3 text-center">
-                    Don't have an account? <a href="register.php">Register here</a>.
+                    Don't have an account? <a href="<?php echo baseUrl('register.php'); ?>">Register here</a>.
                 </p>
             </div>
         </div>

@@ -13,19 +13,19 @@ $articles = $posts->getAll();
                 <div class="row g-0 align-items-center">
                     <div class="col-md-4">
                         <?php if(!empty($article->image)): ?>
-                            <img
+                            <a href="<?php echo baseUrl("article.php?id=" . $article->id); ?>"><img
                             src="<?php echo htmlspecialchars($article->image); ?>"
                             class="img-fluid rounded-start w-100"
                             alt="Blog Post Image"
                             style="height: 220px; object-fit: cover;"
-                            >
+                            ></a>
                         <?php else: ?>
-                            <img
+                            <a href="<?php echo baseUrl("article.php?id=" . $article->id); ?>"><img
                             src="https://placehold.co/350x200"
                             class="img-fluid rounded-start w-100"
                             alt="Blog Post Image"
                             style="height: 220px; object-fit: cover;"
-                            >
+                            ></a>
                         <?php endif; ?>
                     </div>
                     <div class="col-md-8">

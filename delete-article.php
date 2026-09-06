@@ -2,12 +2,12 @@
 require_once 'init.php';
 checkUserLoggedIn();
 if(isPostRequest()) {
-    $articleId = getPostData('article_id');
+    $count = getPostData('article_id');
     $article = new Article();
-    if($article->deleteWithImage($articleId)) {
+    if($article->deleteWithImage($count)) {
         redirect('admin.php');
     } else {
-        setFlashMessage('error', 'Failed to delete the article.');
+        $error = "Failed to delete the article. Please try again.";
     }
 }
 ?>
