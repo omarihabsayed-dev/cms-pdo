@@ -10,11 +10,11 @@ $userArticles = $article->articlesByUser($userId);
         <div class="d-flex justify-content-between align-items-center mb-4">
             <form class="d-flex align-items-center" method="POST" action="<?php echo baseUrl('create-dummy-articles.php'); ?>">
                 <label for="articleCount" class="form-label me-2">Number of Dummy Articles:</label>
-                <input style="width: 100px;" type="number" class="form-control" id="articleCount" name="articleCount" value="10" min="1" max="100">
+                <input style="width: 100px;" type="number" class="form-control" id="articleCount" name="articleCount" value="10" min="1" max="1000">
                 <button id="articleCount" class="btn btn-primary ms-2" type="submit"> Create Dummy Articles</button>
             </form>
-             <form method="POST">
-            <button name="reorder_articles" class="btn btn-warning" type="submit"> Reorder Articles</button>
+             <form action="<?php echo baseUrl('reorder-articles.php'); ?>" method="POST">
+            <button name="reorder_articles" class="btn btn-warning" type="submit"> Reorder Article ID's</button>
             </form>
             <button id="deleteSelected" class="btn btn-danger">Delete Selected Articles</button>
         </div>

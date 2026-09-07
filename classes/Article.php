@@ -59,7 +59,7 @@ class Article {
     }
 
     public function articlesByUser($userId) {
-        $query = "SELECT * FROM " . $this->table . " WHERE user_id = :userId ORDER BY created_at DESC";
+        $query = "SELECT * FROM " . $this->table . " WHERE user_id = :userId";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
         $stmt->execute();
@@ -172,6 +172,45 @@ class Article {
             $stmt->execute();
         }
         return true;
+    }
+
+    public function reorderArticles() {
+        try {
+
+            $this->conn->beginTransaction();
+            $query = "SELECT id FROM " . $this->table . " ORDER BY id ASC";
+            $stmt = $this->conn->prepare($query);
+            $stmt->execute();
+            $articles = $stmt->fetchAll(PDO::FETCH_OBJ);
+            $tempId = 1000000;
+
+            foreach($articles as $article) {
+                $updateQuery = "  UPDATE " . $this->table . " SET id = :tempId WHERE id = :currentId";
+                $updateStmt = $this->conn->prepare($updateQuery);
+                $updateStmt->bindParam(':tempId', $tempId, PDO::PARAM_INT);
+                $updateStmt->bindParam(':currentId', $article->id, PDO::PARAM_INT);
+                $updateStmt->execute();
+                $tempId++;
+            }
+            $newId = 1;
+            $tempId = 1000000;
+            foreach($articles as $article) {
+                $updateQuery = "UPDATE " . $this->table . " SET id = :newId WHERE id = :tempId";
+                $updateStmt = $this->conn->prepare($updateQuery);
+                $updateStmt->bindParam(':newId', $newId, PDO::PARAM_INT);
+                $updateStmt->bindParam(':tempId', $tempId, PDO::PARAM_INT);
+                $updateStmt->execute();
+                $newId++;
+                $tempId++;
+            }
+            $this->conn->commit();
+            return true;
+        } catch (PDOException $e) {
+            if ($this->conn->inTransaction()) {
+                $this->conn->rollBack();
+            }
+            throw $e;
+        }
     }
 }   
 ?>
