@@ -23,6 +23,7 @@ $userArticles = $article->articlesByUser($userId);
             <table class="table table-bordered table-hover align-middle">
                 <thead class="table-dark">
                     <tr>
+                        <th><input type="checkbox" id="selectAll"></th>
                         <th>ID</th>
                         <th>Title</th>
                         <th>Author</th>
@@ -30,6 +31,7 @@ $userArticles = $article->articlesByUser($userId);
                         <th>Excerpt</th>
                         <th>Edit</th>
                         <th>Delete</th>
+                        <th>Ajax delete</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -37,6 +39,7 @@ $userArticles = $article->articlesByUser($userId);
                     <!-- Example Article Row -->
                      <?php foreach($userArticles as $articleItem): ?>
                     <tr>
+                        <td><input type="checkbox" class="articleCheckbox" value="<?php echo $articleItem->id; ?>"></td>
                         <td><?php echo $articleItem->id ?></td>
                         <td><?php echo $articleItem->title ?></td>
                         <td><?php echo $_SESSION['username']; ?></td>
@@ -53,6 +56,9 @@ $userArticles = $article->articlesByUser($userId);
                             <button type="submit" class="btn btn-sm btn-danger">Delete</button>
                             </form>
                         </td>
+                       <td>
+                            <button data-id="<?php echo $articleItem->id; ?>" type="submit" class="btn btn-sm btn-danger delete-single" style="width: auto; white-space: nowrap;">Ajax delete</button>
+                        </td>
                     </tr>
                     <?php endforeach; ?>
                     <?php endif; ?>
@@ -60,6 +66,57 @@ $userArticles = $article->articlesByUser($userId);
             </table>
         </div>
     </main>
+    <script>
+        document.getElementById('selectAll').onclick = function() {
+            let checkboxes = document.querySelectorAll('.articleCheckbox');
+            for (let checkbox of checkboxes) {
+                checkbox.checked = this.checked;
+            }
+        }
+
+        document.getElementById('deleteSelected').onclick = function() {
+            let selectedIds = [];
+            let checkboxes = document.querySelectorAll('.articleCheckbox:checked');
+            checkboxes.forEach((checkbox) => {
+                selectedIds.push(checkbox.value);
+            });
+            console.log(selectedIds);
+            
+            if(selectedIds.length === 0) {
+                alert('Please select at least one article to delete.');
+                return;
+            }
+            if(confirm('Are you sure you want to delete the selected articles?')) {
+                sendDeleteRequest(selectedIds);
+            }
+        }
+        document.querySelectorAll('.delete-single').forEach((button) =>{
+            button.onclick = function() {
+                let articleId = this.getAttribute('data-id');
+                if(confirm('Are you sure you want to delete the selected articles?')) {
+                    sendDeleteRequest([articleId]);
+                }
+            }
+        })
+        function sendDeleteRequest(articleIds) {
+            let xhr = new XMLHttpRequest();
+            xhr.open('POST', '<?php echo baseUrl('delete-ajax.php'); ?>', true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onreadystatechange = function() {
+                if(xhr.readyState === 4 && xhr.status === 200) {
+                    let response = JSON.parse(xhr.responseText);
+                    if(response.success){
+                        alert('we did it');
+                        location.reload();
+                    } else {
+                        alert('failed: ' + response.message);
+                    }
+                }
+            }
+            xhr.send(JSON.stringify({ article_ids: articleIds }));
+        }
+
+    </script>
 <?php
 include 'partials/admin/footer.php';
 ?>

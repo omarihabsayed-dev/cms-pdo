@@ -212,5 +212,12 @@ class Article {
             throw $e;
         }
     }
+
+    public function deleteMultiple($ids) {
+        $placeholders = implode(',', array_fill(0, count($ids), '?'));
+        $query = "DELETE FROM " . $this->table . " WHERE id IN ($placeholders)";
+        $stmt = $this->conn->prepare($query);
+        return $stmt->execute($ids);
+    }
 }   
 ?>
